@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>System Metrics Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+  <div id="app">
+    <main class="grid">
+      <section class="card tile-row" draggable="true">
+        <div class="card-grip" data-drag-handle></div>
+        <div class="card-controls"><div class="card-btn" data-action="collapse">–</div><div class="card-btn" data-action="close">×</div></div>
+        <div class="tile">
+          <div class="tile-header">
+            <span>CPU</span>
+            <span id="cpuValue" class="value">--%</span>
+          </div>
+          <canvas id="cpuSpark" class="sparkline"></canvas>
+        </div>
+        <div class="tile">
+          <div class="tile-header">
+            <span>Memory</span>
+            <span id="memoryValue" class="value">--%</span>
+          </div>
+          <canvas id="memorySpark" class="sparkline"></canvas>
+        </div>
+        <div class="tile">
+          <div class="tile-header">
+            <span>Disk</span>
+            <span id="diskValue" class="value">--%</span>
+          </div>
+          <canvas id="diskSpark" class="sparkline"></canvas>
+        </div>
+        <div class="tile" id="weatherTile">
+          <div class="tile-header">
+            <span>San Diego Weather</span>
+            <span id="weatherValue" class="value">--°F</span>
+          </div>
+          <div class="weather-row"><span id="weatherIcon">☀️</span><span id="weatherDesc" class="muted">Loading…</span></div>
+        </div>
+        <div class="tile" id="clockTile">
+          <div class="tile-header">
+            <span>Clock</span>
+            <span class="muted">Los Angeles</span>
+          </div>
+          <div class="clock">
+            <div id="clockTime" class="clock-time">--:--:--</div>
+            <div id="clockDate" class="clock-date muted">--</div>
+          </div>
+        </div>
+      </section>
+      <section class="card" draggable="true">
+        <div class="card-grip" data-drag-handle></div>
+        <div class="card-controls"><div class="card-btn" data-action="collapse">–</div><div class="card-btn" data-action="close">×</div></div>
+        <h2>Top Business Stories</h2>
+        <ul id="newsList" class="news-list"><li class="muted">Loading...</li></ul>
+      </section>
+      <section class="card" draggable="true">
+        <div class="card-grip" data-drag-handle></div>
+        <div class="card-controls"><div class="card-btn" data-action="collapse">–</div><div class="card-btn" data-action="close">×</div></div>
+        <h2>Market Watch</h2>
+        <div id="stocks" class="stocks"></div>
+      </section>
+      <section class="card" draggable="true">
+        <div class="card-grip" data-drag-handle></div>
+        <div class="card-controls"><div class="card-btn" data-action="collapse">–</div><div class="card-btn" data-action="close">×</div></div>
+        <h2>AI News</h2>
+        <ul id="aiNewsList" class="news-list"><li class="muted">Loading...</li></ul>
+      </section>
+      <section class="card" draggable="true">
+        <div class="card-grip" data-drag-handle></div>
+        <div class="card-controls"><div class="card-btn" data-action="collapse">–</div><div class="card-btn" data-action="close">×</div></div>
+        <h2>Widget A</h2>
+        <div id="widgetA" class="widget-placeholder">
+          <iframe src="/widgets/tv-mini?symbol=NASDAQ:QQQ&range=1M&theme=dark&transparent=true&locale=en&titleHref=https%3A%2F%2Fwww.tradingview.com%2Fsymbols%2FNASDAQ-QQQ%2F%3Fexchange%3DNASDAQ&titleText=QQQ%20chart%20by%20TradingView" title="QQQ mini chart" frameborder="0" width="100%" height="260" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </section>
+      <section class="card" draggable="true">
+        <div class="card-grip" data-drag-handle></div>
+        <div class="card-controls"><div class="card-btn" data-action="collapse">–</div><div class="card-btn" data-action="close">×</div></div>
+        <h2>Widget B</h2>
+        <div id="widgetB" class="widget-placeholder">
+          <iframe src="/widgets/tv-mini?symbol=NYSE:ABBV&range=1M&theme=dark&transparent=true&locale=en&titleHref=https%3A%2F%2Fwww.tradingview.com%2Fsymbols%2FNYSE-ABBV%2F%3Fexchange%3DNYSE&titleText=ABBV%20chart%20by%20TradingView" title="ABBV mini chart" frameborder="0" width="100%" height="260" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </section>
+      <section class="card cube-card" draggable="true">
+        <div class="card-grip" data-drag-handle></div>
+        <div class="card-controls"><div class="card-btn" data-action="collapse">–</div><div class="card-btn" data-action="close">×</div></div>
+        <div class="cube-header">
+          <h2>Rubik's Cube (3×3)</h2>
+          <div class="cube-controls">
+            <button id="cubeReset">Reset</button>
+            <button id="cubeScramble">Scramble</button>
+            <button id="cubeSolve">Solve</button>
+            <label class="speed-label">Speed
+              <input id="cubeSpeed" type="range" min="0.2" max="2.0" step="0.1" value="1.0">
+            </label>
+            <label>Camera
+              <select id="cameraPreset">
+                <option value="iso" selected>Isometric</option>
+                <option value="front">Front</option>
+                <option value="top">Top</option>
+                <option value="side">Side</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div id="cubeContainer"></div>
+        <div class="hint">Keyboard: F R U L D B (hold Shift for prime ′)</div>
+      </section>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
