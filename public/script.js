@@ -583,7 +583,7 @@ setInterval(async () => {
 
   async function loadStocks() {
     try {
-      const symbols = 'SPY,QQQ,DIA,IWM,TLT,TSLA,MSFT,GOOGL,C,ABBV,NVDA,TSM,WMT,BSX,EOG';
+      const symbols = 'SPY,QQQ,DIA,IWM,TLT,IAU,TSLA,MSFT,GOOGL,C,ABBV,NVDA,TSM,WMT,BSX,EOG';
       const r = await fetch(`/api/stocks?symbols=${encodeURIComponent(symbols)}`);
       const { data = [] } = await r.json();
       const wrap = document.getElementById('stocks');

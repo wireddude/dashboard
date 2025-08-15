@@ -369,7 +369,7 @@ app.get('/api/news/ai', async (_req, res) => {
 // --- Stocks quotes ---
 app.get('/api/stocks', async (req, res) => {
   try {
-    const symbols = (req.query.symbols || 'SPY,QQQ,DIA,IWM,TLT,GOOGL').split(',').map((s) => s.trim());
+    const symbols = (req.query.symbols || 'SPY,QQQ,DIA,IWM,TLT,IAU,GOOGL').split(',').map((s) => s.trim());
     const quotes = await yahooFinance.quote(symbols);
     const data = (Array.isArray(quotes) ? quotes : [quotes]).map((q) => ({
       symbol: q.symbol,
